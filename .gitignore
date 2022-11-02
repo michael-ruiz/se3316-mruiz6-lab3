@@ -1,5 +1,13 @@
 # Ignore Mac system files
 .DS_store
 
-# Ignore Data
+# Ignore data
 lab3-data
+
+# Ignore node packages
+node_modules
+package.json
+package-lock.json
+
+# Ignore .env
+.env
