@@ -9,5 +9,5 @@ node_modules
 package.json
 package-lock.json
 
-# Ignore .env
-.env
+# Ignore file for REST testing
+*.rest
