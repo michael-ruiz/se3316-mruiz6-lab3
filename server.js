@@ -74,14 +74,3 @@ router.get('/tracks/:id', async (req, res) => {
 
 app.use('/api/music', router)
 app.listen(port, () => console.log(`Server Started on Port ${port}`));
-
-function selectProperties(...properties)
-{
-    return function(o)
-    {
-      const newO = {};
-      properties.forEach(a => {newO[a] = o[a];});
-      
-      return newO;
-    }
-  }
