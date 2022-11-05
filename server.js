@@ -10,15 +10,12 @@ let genres = [];
 let albums = [];
 let artists = [];
 let tracks = [];
-fs.createReadStream('lab3-data/genres.csv').pipe(csv()).on('data', (rows) => {genres.push(rows);})
-.on('end', () => {genres = genres.map(selectProperties('genre_id', '#tracks', 'title'));});
+fs.createReadStream('lab3-data/genres.csv').pipe(csv()).on('data', (rows) => {genres.push(rows);});
 fs.createReadStream('lab3-data/raw_albums.csv').pipe(csv()).on('data', (rows) => {albums.push(rows);});
-fs.createReadStream('lab3-data/raw_artists.csv').pipe(csv()).on('data', (rows) => {artists.push(rows);})
-.on('end', () => {tracks = tracks.map(selectProperties('artist_id', 'artist_active_year_begin', 'artist_active_year_end', 'artist_bio', 'artist_location', 'artist_name', 'tags'));});
-fs.createReadStream('lab3-data/raw_tracks.csv').pipe(csv()).on('data', (rows) => {tracks.push(rows);})
-.on('end', () => {tracks = tracks.map(selectProperties('track_id', 'track_title', 'artist_name'));});
+fs.createReadStream('lab3-data/raw_artists.csv').pipe(csv()).on('data', (rows) => {artists.push(rows);});
+fs.createReadStream('lab3-data/raw_tracks.csv').pipe(csv()).on('data', (rows) => {tracks.push(rows);});
 
-app.use('/', express.static('static'));
+app.use('/', express.static('client-side'));
 app.use(express.json());
 
 // Print out the request
@@ -41,7 +38,7 @@ router.get('/genres/:id', async (req, res) => {
 
 // Get all albums
 router.get('/albums', async (req, res) => {
-    res.json(tracks);
+    res.json(albums);
 });
 
 // Get album by id

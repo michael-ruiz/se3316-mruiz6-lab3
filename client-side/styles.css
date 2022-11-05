@@ -1,0 +1,69 @@
+body
+{
+    background-color: gray;
+    font-family: Arial; 
+}
+
+h1.title
+{
+    text-align: center;
+}
+
+ul.list
+{
+    list-style-type: none;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: center;
+}
+
+#genresList
+{
+    list-style-type: none;
+    text-align: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+#albumsList
+{
+    list-style-type: none;
+    text-align: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+#artistsList
+{
+    list-style-type: none;
+    text-align: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+#tracksList
+{
+    list-style-type: none;
+    text-align: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+li.elem
+{
+    width: 40%;
+    margin: 30px;
+}
+
+li.results
+{
+    margin: 5px;
+}
+
+button.option
+{
+    width: 100%;
+    height: 300%;
+    border-radius: 15px;
+}
