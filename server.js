@@ -36,6 +36,13 @@ router.get('/genres/:id', async (req, res) => {
     res.json(g);
 });
 
+// Search for genre by name (only 5)
+router.get('/genres/title/:name', async (req, res) => {
+    const t = req.params.name
+    let g = genres.filter(x => x.title.includes(t)).slice(0,5);
+    res.json(g);
+});
+
 // Get all albums
 router.get('/albums', async (req, res) => {
     res.json(albums);
@@ -45,6 +52,13 @@ router.get('/albums', async (req, res) => {
 router.get('/albums/:id', async (req, res) => {
     const id = req.params.id
     let g = albums.find(x => x.album_id == id);
+    res.json(g);
+});
+
+// Search for album by name (only 5)
+router.get('/albums/title/:name', async (req, res) => {
+    const t = req.params.name
+    let g = albums.filter(x => x.album_title.includes(t)).slice(0,5);
     res.json(g);
 });
 
@@ -60,6 +74,13 @@ router.get('/artists/:id', async (req, res) => {
     res.json(g);
 });
 
+// Search for artist by name (only 5)
+router.get('/artists/title/:name', async (req, res) => {
+    const t = req.params.name
+    let g = artists.filter(x => x.artist_name.includes(t)).slice(0,5);
+    res.json(g);
+});
+
 // Get all tracks
 router.get('/tracks', async (req, res) => {
     res.json(tracks);
@@ -69,6 +90,13 @@ router.get('/tracks', async (req, res) => {
 router.get('/tracks/:id', async (req, res) => {
     const id = req.params.id
     let g = tracks.find(x => x.track_id == id);
+    res.json(g);
+});
+
+// Search for track by name (only 5)
+router.get('/tracks/title/:name', async (req, res) => {
+    const t = req.params.name
+    let g = tracks.filter(x => x.track_title.includes(t)).slice(0,5);
     res.json(g);
 });
 

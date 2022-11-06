@@ -11,10 +11,14 @@
 <body>
     <h1 class="title">Music App</h1>
     <div align="center">
-        <input class="input" type="text" id="searchGenre" placeholder="Search by genre">
-        <input class="input" type="text" id="searchAlbum" placeholder="Search by album">
-        <input class="input" type="text" id="searchArtist" placeholder="Search by artist">
-        <input class="input" type="text" id="searchTrack" placeholder="Search by track">
+        <input class="input" type="text" id="searchGenre" placeholder="Search by genre" maxlength="20">
+        <button class="search" onclick="searchGenre()">Search</button>
+        <input class="input" type="text" id="searchAlbum" placeholder="Search by album" maxlength="20">
+        <button class="search" onclick="searchAlbum()">Search</button>
+        <input class="input" type="text" id="searchArtist" placeholder="Search by artist" maxlength="20">
+        <button class="search" onclick="searchArtist()">Search</button>
+        <input class="input" type="text" id="searchTrack" placeholder="Search by track" maxlength="20">
+        <button class="search" onclick="searchTrack()">Search</button>
     </div>
     <ul class="list">
         <li class="elem"><button class="option" onclick="getGenres()">View Genres</button></li>
