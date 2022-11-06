@@ -1,3 +1,6 @@
+let lists = [];
+let possibleSongs = [];
+
 async function getGenres()
 {
     let ul = document.createElement('ul');
@@ -125,11 +128,20 @@ async function searchGenre()
             let li = document.createElement('li');
             li.innerText = e.title;
             li.className = 'results';
+            let check = document.createElement('input');
+            check.type = 'checkbox';
+
+            li.appendChild(check);
             ul.appendChild(li);
         }
         );
         
     })
+
+    let btn = document.createElement('button');
+    btn.innerText = 'Add';
+    btn.className = 'search';
+    ul.appendChild(btn);
 
     if (document.getElementById('genresList') != null)
     {
@@ -153,12 +165,21 @@ async function searchAlbum()
         res.forEach(e => {
             let li = document.createElement('li');
             li.innerText = e.album_title;
+            let check = document.createElement('input');
+            check.type = 'checkbox';
+
+            li.appendChild(check);
             li.className = 'results';
             ul.appendChild(li);
         }
         );
         
     })
+
+    let btn = document.createElement('button');
+    btn.innerText = 'Add';
+    btn.className = 'search';
+    ul.appendChild(btn);
 
     if (document.getElementById('albumsList') != null)
     {
@@ -183,11 +204,20 @@ async function searchArtist()
             let li = document.createElement('li');
             li.innerText = e.artist_name;
             li.className = 'results';
+            let check = document.createElement('input');
+            check.type = 'checkbox';
+
+            li.appendChild(check);
             ul.appendChild(li);
         }
         );
         
     })
+
+    let btn = document.createElement('button');
+    btn.innerText = 'Add';
+    btn.className = 'search';
+    ul.appendChild(btn);
 
     if (document.getElementById('artistsList') != null)
     {
@@ -212,11 +242,33 @@ async function searchTrack()
             let li = document.createElement('li');
             li.innerText = e.track_title;
             li.className = 'results';
+            let check = document.createElement('input');
+            check.type = 'checkbox';
+            check.onchange = function(){
+                if (check.checked == true)
+                {
+                    possibleSongs.push(li.innerText);
+                }
+                else
+                {
+                    possibleSongs.remove(li.innerText);
+                    let i = possibleSongs.indexOf(li.innerText);
+                    possibleSongs.splice(i, 1);
+                }
+            };
+
+            li.appendChild(check);
             ul.appendChild(li);
         }
         );
         
     })
+
+    let btn = document.createElement('button');
+    btn.innerText = 'Add';
+    btn.className = 'search';
+    btn.onclick = check;
+    ul.appendChild(btn);
 
     if (document.getElementById('tracksList') != null)
     {
@@ -224,4 +276,32 @@ async function searchTrack()
     }
     
     document.getElementById('tracks').appendChild(ul);
+}
+
+async function check()
+{
+    let listName = prompt('What list do you want to add it to?');
+    let temp = {};
+    temp.name = listName;
+    temp.songs = possibleSongs;
+
+    for (i = 0; i < lists.length; i++)
+    {
+        if (lists[i].name === listName)
+        {
+            lists[i].songs.concat(temp.songs);
+            possibleSongs = [];
+        }
+    }
+
+    lists.push(temp);
+    possibleSongs = [];
+
+    await fetch(`http://localhost:3000/api/music/tracks/lists`, {
+        method: 'PUT',
+        body: JSON.stringify(lists),
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
 }

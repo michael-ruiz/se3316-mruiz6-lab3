@@ -6,6 +6,7 @@ const router = express.Router();
 const port = 3000;
 
 // Populate lists with data
+let lists = [];
 let genres = [];
 let albums = [];
 let artists = [];
@@ -98,6 +99,11 @@ router.get('/tracks/title/:name', async (req, res) => {
     const t = req.params.name
     let g = tracks.filter(x => x.track_title.includes(t)).slice(0,5);
     res.json(g);
+});
+
+router.put('/tracks/lists/', async (req, res) => {
+    lists.push(req.body);
+    console.log(req.body);
 });
 
 app.use('/api/music', router)
