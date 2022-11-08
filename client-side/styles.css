@@ -35,6 +35,14 @@ ul.list
     margin-top: 50px;
     border-bottom: 5px solid;
 }
+#List
+{
+    list-style-type: none;
+    text-align: center;
+    justify-content: center;
+    margin-top: 50px;
+    border-bottom: 5px solid;
+}
 
 #artistsList
 {

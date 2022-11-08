@@ -6,11 +6,13 @@ const router = express.Router();
 const port = 3000;
 
 // Populate lists with data
-let lists = [];
 let genres = [];
 let albums = [];
 let artists = [];
 let tracks = [];
+let lists = require('./lab3-data/lists.json');
+const { send } = require('process');
+console.log(lists);
 fs.createReadStream('lab3-data/genres.csv').pipe(csv()).on('data', (rows) => {genres.push(rows);});
 fs.createReadStream('lab3-data/raw_albums.csv').pipe(csv()).on('data', (rows) => {albums.push(rows);});
 fs.createReadStream('lab3-data/raw_artists.csv').pipe(csv()).on('data', (rows) => {artists.push(rows);});
@@ -32,14 +34,14 @@ router.get('/genres', async (req, res) => {
 
 // Get genre by id
 router.get('/genres/:id', async (req, res) => {
-    const id = req.params.id
+    const id = String(req.params.id);
     let g = genres.find(x => x.genre_id === id);
     res.json(g);
 });
 
 // Search for genre by name (only 5)
 router.get('/genres/title/:name', async (req, res) => {
-    const t = req.params.name
+    const t = String(req.params.name);
     let g = genres.filter(x => x.title.includes(t)).slice(0,5);
     res.json(g);
 });
@@ -51,14 +53,14 @@ router.get('/albums', async (req, res) => {
 
 // Get album by id
 router.get('/albums/:id', async (req, res) => {
-    const id = req.params.id
+    const id = String(req.params.id);
     let g = albums.find(x => x.album_id == id);
     res.json(g);
 });
 
 // Search for album by name (only 5)
 router.get('/albums/title/:name', async (req, res) => {
-    const t = req.params.name
+    const t = String(req.params.name);
     let g = albums.filter(x => x.album_title.includes(t)).slice(0,5);
     res.json(g);
 });
@@ -70,14 +72,14 @@ router.get('/artists', async (req, res) => {
 
 // Get artist by id
 router.get('/artists/:id', async (req, res) => {
-    const id = req.params.id
+    const id = String(req.params.id);
     let g = artists.find(x => x.artist_id == id);
     res.json(g);
 });
 
 // Search for artist by name (only 5)
 router.get('/artists/title/:name', async (req, res) => {
-    const t = req.params.name
+    const t = String(req.params.name);
     let g = artists.filter(x => x.artist_name.includes(t)).slice(0,5);
     res.json(g);
 });
@@ -89,21 +91,56 @@ router.get('/tracks', async (req, res) => {
 
 // Get track by id
 router.get('/tracks/:id', async (req, res) => {
-    const id = req.params.id
+    const id = String(req.params.id);
     let g = tracks.find(x => x.track_id == id);
     res.json(g);
 });
 
 // Search for track by name (only 5)
 router.get('/tracks/title/:name', async (req, res) => {
-    const t = req.params.name
+    const t = String(req.params.name);
     let g = tracks.filter(x => x.track_title.includes(t)).slice(0,5);
     res.json(g);
 });
 
-router.put('/tracks/lists/', async (req, res) => {
-    lists.push(req.body);
-    console.log(req.body);
+router.put('/tracks/lists/:name', async (req, res) => {
+    const newList = req.params.name
+
+    let l = lists.find(x => {x.name == newList.name});
+
+    if (l == undefined)
+    {
+        lists.push(newList);
+        fs.writeFile('./lab3-data/lists.json', JSON.stringify(lists), (e) => {
+            if (e){throw e};
+            console.log(e);
+        });
+    }
+});
+
+// Get lists
+router.get('/tracks/lists/', async (req, res) => {
+    res.send('testtt');
+});
+
+// Delete a list
+router.delete('/tracks/lists/:name', async (req, res) => {
+    const n = req.params.name;
+    if (lists.length > 0)
+    {
+        const l = lists.find(x => x.name === n);
+        let i = lists.indexOf(l);
+        lists.splice(i, 1); 
+
+        fs.writeFile('./lab3-data/lists.json', JSON.stringify(lists), (e) => {
+            if (e){throw e};
+            console.log(e);
+        });
+    }
+    else 
+    {
+        res.status(404).send('No Lists');
+    }
 });
 
 app.use('/api/music', router)
