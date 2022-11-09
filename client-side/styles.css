@@ -59,7 +59,7 @@ ul.list
     text-align: center;
     justify-content: center;
     margin-top: 50px;
-    border-bottom: 5px solid;
+    border-bottom: solid 8px;
 }
 
 li.elem
@@ -92,4 +92,10 @@ input.input
     width: 200px;
     height: 25px;
     border-radius: 12px;
+}
+
+li.header
+{
+    border-bottom: solid 2px;
+    font-weight: bold;
 }

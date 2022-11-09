@@ -1,9 +1,15 @@
 let possibleSongs = [];
+let currentTracks = [];
+let sortSeparator = '----------------------------------------------------';
 
 async function getGenres()
 {
     let ul = document.createElement('ul');
     ul.id = 'genresList';
+    let header = document.createElement('li');
+    header.className = 'header';
+    header.innerText = `ID - GENRE`;
+    ul.appendChild(header);
     await fetch('/api/music/genres', {
         method: 'GET',
         headers: {
@@ -12,7 +18,7 @@ async function getGenres()
     }).then(res => res.json()).then(res => {
         res.forEach(e => {
             let li = document.createElement('li');
-            li.innerText = e.title;
+            li.innerText = `${e.genre_id} - ${e.title}`;
             li.className = 'results';
             ul.appendChild(li);
         }
@@ -32,6 +38,10 @@ async function getAlbums()
 {
     let ul = document.createElement('ul');
     ul.id = 'albumsList';
+    let header = document.createElement('li');
+    header.className = 'header';
+    header.innerText = `ID - ALBUM`;
+    ul.appendChild(header);
     await fetch('/api/music/albums', {
         method: 'GET',
         headers: {
@@ -40,7 +50,7 @@ async function getAlbums()
     }).then(res => res.json()).then(res => {
         res.forEach(e => {
             let li = document.createElement('li');
-            li.innerText = e.album_title;
+            li.innerText = `${e.album_id} - ${e.album_title}`;
             li.className = 'results';
             ul.appendChild(li);
         }
@@ -60,6 +70,10 @@ async function getArtists()
 {
     let ul = document.createElement('ul');
     ul.id = 'artistsList';
+    let header = document.createElement('li');
+    header.className = 'header';
+    header.innerText = `ID - ARTIST`;
+    ul.appendChild(header);
     await fetch('/api/music/artists', {
         method: 'GET',
         headers: {
@@ -68,7 +82,7 @@ async function getArtists()
     }).then(res => res.json()).then(res => {
         res.forEach(e => {
             let li = document.createElement('li');
-            li.innerText = e.artist_name;
+            li.innerText = `${e.artist_id} - ${e.artist_name}`;
             li.className = 'results';
             ul.appendChild(li);
         }
@@ -88,6 +102,10 @@ async function getTracks()
 {
     let ul = document.createElement('ul');
     ul.id = 'tracksList';
+    let header = document.createElement('li');
+    header.className = 'header';
+    header.innerText = `ID - TRACK - ARTIST - ALBUM - TIME`;
+    ul.appendChild(header);
     await fetch('/api/music/tracks', {
         method: 'GET',
         headers: {
@@ -96,7 +114,7 @@ async function getTracks()
     }).then(res => res.json()).then(res => {
         res.forEach(e => {
             let li = document.createElement('li');
-            li.innerText = e.track_title;
+            li.innerText = `${e.track_id} - ${e.track_title} - ${e.artist_name} - ${e.album_title} - ${e.track_duration}`;
             li.className = 'results';
             ul.appendChild(li);
         }
@@ -116,6 +134,10 @@ async function searchGenre()
 {
     let ul = document.createElement('ul');
     ul.id = 'genresList';
+    let header = document.createElement('li');
+    header.className = 'header';
+    header.innerText = `ID - GENRE`;
+    ul.appendChild(header);
     let input = document.getElementById('searchGenre').value;
     await fetch(`/api/music/genres/title/${input}`, {
         method: 'GET',
@@ -125,7 +147,7 @@ async function searchGenre()
     }).then(res => res.json()).then(res => {
         res.forEach(e => {
             let li = document.createElement('li');
-            li.innerText = e.title;
+            li.innerText = `${e.genre_id} - ${e.title}`;
             li.className = 'results';
             ul.appendChild(li);
         }
@@ -145,6 +167,10 @@ async function searchAlbum()
 {
     let ul = document.createElement('ul');
     ul.id = 'albumsList';
+    let header = document.createElement('li');
+    header.className = 'header';
+    header.innerText = `ID - ALBUM`;
+    ul.appendChild(header);
     let input = document.getElementById('searchAlbum').value;
     await fetch(`/api/music/albums/title/${input}`, {
         method: 'GET',
@@ -154,7 +180,7 @@ async function searchAlbum()
     }).then(res => res.json()).then(res => {
         res.forEach(e => {
             let li = document.createElement('li');
-            li.innerText = e.album_title;
+            li.innerText = `${e.album_id} - ${e.album_title}`;
             li.className = 'results';
             ul.appendChild(li);
         }
@@ -174,6 +200,10 @@ async function searchArtist()
 {
     let ul = document.createElement('ul');
     ul.id = 'artistsList';
+    let header = document.createElement('li');
+    header.className = 'header';
+    header.innerText = `ID - ARTIST`;
+    ul.appendChild(header);
     let input = document.getElementById('searchArtist').value;
     await fetch(`/api/music/artists/title/${input}`, {
         method: 'GET',
@@ -183,7 +213,7 @@ async function searchArtist()
     }).then(res => res.json()).then(res => {
         res.forEach(e => {
             let li = document.createElement('li');
-            li.innerText = e.artist_name;
+            li.innerText = `${e.artist_id} - ${e.artist_name}`;
             li.className = 'results';
             ul.appendChild(li);
         }
@@ -203,6 +233,10 @@ async function searchTrack()
 {
     let ul = document.createElement('ul');
     ul.id = 'tracksList';
+    let header = document.createElement('li');
+    header.className = 'header';
+    header.innerText = `ID - TRACK - ARTIST - ALBUM - TIME`;
+    ul.appendChild(header);
     let input = document.getElementById('searchTrack').value;
     await fetch(`/api/music/tracks/title/${input}`, {
         method: 'GET',
@@ -211,19 +245,26 @@ async function searchTrack()
         },
     }).then(res => res.json()).then(res => {
         res.forEach(e => {
+            let song = {};
+            song.track_id = e.track_id;
+            song.track_title = e.track_title;
+            song.artist_name = e.artist_name;
+            song.track_duration = e.track_duration;
+            song.album_title = e.album_title;
+
             let li = document.createElement('li');
-            li.innerText = e.track_title;
+            li.innerText = `${e.track_id} - ${e.track_title} - ${e.artist_name} - ${e.album_title} - ${e.track_duration}`;
             li.className = 'results';
             let check = document.createElement('input');
             check.type = 'checkbox';
-            check.onchange = function(){
+            check.onchange = () => {
                 if (check.checked == true)
                 {
-                    possibleSongs.push(e.track_id);
+                    possibleSongs.push(song);
                 }
                 else
                 {
-                    let i = possibleSongs.indexOf(li.innerText);
+                    let i = possibleSongs.indexOf(song);
                     possibleSongs.splice(i, 1);   
                 }
             };
@@ -268,27 +309,62 @@ async function check()
 
 async function getLists()
 {
-    let t = document.getElementById('listse');
     let ul = document.createElement('ul');
     ul.id = 'List';
-    await fetch(`/api/music/tracks/lists`).then(res => res.json()).then(res => {
-        res.forEach(e => {
-            let li = document.createElement('li');
-            let btn = document.createElement('button');
-            btn.innerText = 'Delete';
-            btn.onclick = () => 
-            {
-                fetch(`/api/music/lists/${e.name}}`, {
-                    method: 'DELETE',
-                },)
+    let header = document.createElement('li');
+    header.className = 'header';
+    header.innerText = `NAME - TRACK IDs`;
+    ul.appendChild(header);
+    let btn1 = document.createElement('button');
+    btn1.className = 'search';
+    btn1.innerText = 'Sort by name';
+    btn1.onclick = () => {
+        currentTracks.sort(function (a, b) {
+            if (a.name < b.name) {
+              return -1;
             }
-            li.innerText = `${e.name} ${e.songs}`;
+            if (a.name > b.name) {
+              return 1;
+            }
+            return 0;
+          })
+
+            let sep = document.createElement('li');
+            sep.innerText = sortSeparator;
+            ul.appendChild(sep);
+
+           currentTracks.forEach(e => {
+            let ids = []; 
+            e.songs.forEach((x) => ids.push(x.track_id))
+            let li = document.createElement('li');
+            li.innerText = `${e.name} - ${ids}`;
             li.className = 'results';
+            ul.appendChild(li);
+        });
+    };
+    ul.appendChild(btn1);
+
+    await fetch(`/api/music/tracks/lists/all`).then(res => res.json()).then(res => {
+        res.forEach(e => {
+            currentTracks.push(e);
+            let ids = []; 
+            e.songs.forEach((x) => ids.push(x.track_id))
+            let li = document.createElement('li');
+            li.innerText = `${e.name} - ${ids}`;
+            li.className = 'results';
+            let btn = document.createElement('button');
+            btn.className = 'search';
+            btn.innerText = 'Delete';
+            btn.onclick = () => {
+                console.log(e.name);
+                fetch(`/api/music/tracks/lists/delete/${e.name}`, {
+                    method: 'DELETE',
+                  });
+            };
             li.appendChild(btn);
             ul.appendChild(li);
-        }
-        ); 
-    })
+        });
+    });
 
     if (document.getElementById('lists') != null)
     {
